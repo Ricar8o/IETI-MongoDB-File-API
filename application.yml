@@ -1,4 +1,0 @@
-spring:
-  data:
-    mongodb:
-      uri: mongodb+srv://ricardo:LqpLBxHkDyikucBi@cluster-ieti.htfx4.mongodb.net/fileDatabase?retryWrites=true&w=majority

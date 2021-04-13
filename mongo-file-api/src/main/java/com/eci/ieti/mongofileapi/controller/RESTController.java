@@ -42,10 +42,9 @@ public class RESTController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-
     }
 
-    @CrossOrigin("*")
+    @CrossOrigin(origins = "*")
     @PostMapping("/files")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
         String name  = URLEncoder.encode(file.getOriginalFilename(), StandardCharsets.UTF_8);
