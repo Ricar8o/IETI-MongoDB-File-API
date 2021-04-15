@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { format, isValid } from 'date-fns';
 import swal from 'sweetalert';
 import './Style.css';
@@ -14,9 +13,7 @@ export class TaskForm extends React.Component{
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
-        this.axios = axios.create({
-            baseURL: 'http://localhost:8080/api/'
-        });
+        this.axios = this.props.axios;
     }
     
     handleChange(event){
@@ -29,28 +26,66 @@ export class TaskForm extends React.Component{
         });                
     }
 
+    makeSwal(message,icon){
+        swal({
+            title: message,
+            icon: icon
+        })
+    }
+
+    async postTodo(){
+        let data = new FormData();
+        data.append('file', this.state.file);
+        var link = null;
+        if (this.state.file!=null){
+            await this.axios.post('/api/files', data)
+            .then(function (response) {
+                console.log("file uploaded!", response.data);
+                link = response.data;
+            })
+            .catch(function (error) {
+                console.log("failed file upload", error);
+                this.makeSwal("Wrong Data","error");
+            });
+        }
+
+        let body = {
+            "description": this.state.description,
+            "dueDate": this.state.dueDate,
+            "responsible": {
+                "name": this.state.responsible,
+                "email": this.state.email
+            },
+            "status": this.state.status,
+            "fileUrl": link
+        }
+
+        let message = "Wrong Data";
+        let icon = "error";
+        await this.axios.post('/api/todo', body)
+        .then(function (response) {
+            console.log("Todo uploaded!", response.data);
+            message = "Post Request Done :)";
+            icon = "success";
+        })
+        .catch(function (error) {
+            console.log("failed file upload", error);
+        });
+
+        this.makeSwal(message,icon);
+
+        if (icon==="success"){
+            this.props.taskList.push(body);
+        }
+    }
+
     handleSubmit(event) {
         if (!this.state.description.length || !this.state.status.length || !this.state.responsible.length || !this.state.email.length){
-            swal({
-                title: "Wrong Data",
-                icon: "error"
-            })
+            this.makeSwal("Wrong Data","error");
         }else{
-            let data = new FormData();
-            data.append('file', this.state.file);
-    
-            this.axios.post('files', data)
-                .then(function (response) {
-                    console.log("file uploaded!", response.data);
-                })
-                .catch(function (error) {
-                    console.log("failed file upload", error);
-                });
-            swal({
-                title: "Upload!",
-                icon: "success"
-            })
+            this.postTodo();
         }
+        
         event.preventDefault();
     }
 
