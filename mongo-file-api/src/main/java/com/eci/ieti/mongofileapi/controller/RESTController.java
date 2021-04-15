@@ -19,8 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RequestMapping("api")
@@ -52,12 +50,12 @@ public class RESTController {
     @CrossOrigin(origins = "*")
     @PostMapping("/files")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
-        String name  = URLEncoder.encode(file.getOriginalFilename(), StandardCharsets.UTF_8);
-        gridFsTemplate.store(file.getInputStream(), name, file.getContentType());
+        
+        gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
 
         return ResponseEntity.created(null)
         .contentType(MediaType.APPLICATION_JSON)
-        .body("/api/files/"+name);
+        .body("/api/files/"+file.getOriginalFilename());
     }
 
     @CrossOrigin(origins = "*")

@@ -16,7 +16,7 @@ th{
 }
 
 tr:nth-child(even) {
-    background-color: #aed3b3;
+    background-color: #e4f1e6;
 }
 
 .container {
@@ -71,3 +71,8 @@ td img{
     width: 100%;
     height: auto;
 }
+
+a { 
+    color: #8a1919;
+    font-size: xx-large;
+} 
