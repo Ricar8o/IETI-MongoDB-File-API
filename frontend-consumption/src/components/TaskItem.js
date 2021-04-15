@@ -19,6 +19,7 @@ export class TaskItem extends React.Component{
         return(
             <tr>
                 <td>{this.props.description}</td>
+                <td>{this.props.priority}</td>
                 <td>{this.props.dueDate}</td>
                 <td>{this.props.status}</td>
                 <td>{this.props.responsible}</td>

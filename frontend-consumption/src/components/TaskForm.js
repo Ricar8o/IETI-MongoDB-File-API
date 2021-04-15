@@ -8,11 +8,10 @@ export class TaskForm extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {description: '', dueDate: today, status: '', responsible: '', email: ''};
+        this.state = {description: '', dueDate: today, status: '', responsible: '', email: '', priority:0};
         this.handleChange = this.handleChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
         this.axios = this.props.axios;
     }
     
@@ -52,6 +51,7 @@ export class TaskForm extends React.Component{
         let body = {
             "description": this.state.description,
             "dueDate": this.state.dueDate,
+            "priority": this.state.priority,
             "responsible": {
                 "name": this.state.responsible,
                 "email": this.state.email
@@ -96,6 +96,11 @@ export class TaskForm extends React.Component{
                     <label>
                         Description:
                         <input name="description" type="text" value={this.state.description} onChange={this.handleChange} />         
+                    </label>
+                    <br/>
+                    <label>
+                        Priority:
+                        <input name="priority" type="number" value={this.state.priority} onChange={this.handleChange} min="0" max="5"/>         
                     </label>
                     <br/>
                     <label>
