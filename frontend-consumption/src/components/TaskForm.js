@@ -40,7 +40,7 @@ export class TaskForm extends React.Component{
         if (this.state.file!=null){
             await this.axios.post('/api/files', data)
             .then(function (response) {
-                console.log("file uploaded!", response.data);
+                console.log("file uploaded!", response.status);
                 link = response.data;
             })
             .catch(function (error) {
@@ -75,7 +75,7 @@ export class TaskForm extends React.Component{
         this.makeSwal(message,icon);
 
         if (icon==="success"){
-            this.props.taskList.push(body);
+            this.props.addTodo(body);
         }
     }
 

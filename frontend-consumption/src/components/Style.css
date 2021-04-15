@@ -29,11 +29,8 @@ h1 {
 
 .taskForm, .userForm {
     padding: 7%;
-}
-
-.userForm{
-    padding-left: 15%;
-    padding-right: 15%;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 body {

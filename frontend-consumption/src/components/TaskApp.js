@@ -13,6 +13,8 @@ export class TaskApp extends React.Component{
         this.axios = axios.create({
             baseURL: 'http://localhost:8080'
         });
+
+        this.addTodo = this.addTodo.bind(this);
     }
 
     componentDidMount(){
@@ -33,11 +35,18 @@ export class TaskApp extends React.Component{
         });
     }
 
+    addTodo(todo){
+        let todosList = this.state.items;
+        todosList.push(todo);
+        this.setState({items: todosList});
+        console.log(this.state.items);
+    }
+
     render(){
         return(
             <div>
                 <TaskList taskList={this.state.items} axios={this.axios}/>
-                <TaskForm taskList={this.state.items} axios={this.axios}/>
+                <TaskForm addTodo={this.addTodo} axios={this.axios}/>
             </div>
         );
     }
