@@ -4,6 +4,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+
+import com.eci.ieti.mongofileapi.data.TodoRepository;
 import com.eci.ieti.mongofileapi.data.model.Todo;
 import com.mongodb.client.gridfs.model.GridFSFile;
 
@@ -27,6 +29,9 @@ public class RESTController {
     
     @Autowired
     GridFsTemplate gridFsTemplate;
+
+    @Autowired
+    TodoRepository todoRepository;
 
     @RequestMapping("/files/{filename}")
     public ResponseEntity<InputStreamResource> getFileByName(@PathVariable String filename) throws IOException {
@@ -52,21 +57,19 @@ public class RESTController {
 
         return ResponseEntity.created(null)
         .contentType(MediaType.APPLICATION_JSON)
-        .body("redirect:/api/files/"+name);
+        .body("/api/files/"+name);
     }
 
-    @CrossOrigin("*")
+    @CrossOrigin(origins = "*")
     @PostMapping("/todo")
-    public Todo createTodo(@RequestBody Todo todo) {
-        //TODO implement method
-        return null;
+    public Todo createTodo(@RequestBody Todo todo) {        
+        return todoRepository.save(todo);
     }
 
-    @CrossOrigin("*")
+    @CrossOrigin(origins = "*")
     @GetMapping("/todo")
     public List<Todo> getTodoList() {
-        //TODO implement method
-        return null;
+        return todoRepository.findAll();
     }
 
 }
